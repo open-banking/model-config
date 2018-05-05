@@ -1,0 +1,250 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://bank.lightapi.net/api"
+    }
+  ],
+  "info": {
+    "contact": {
+      "name": "Steve Hu",
+      "url": "www.networknt.com/example/openbanking/",
+      "email": "stevehu@gmail.com"
+    },
+    "version": "v1_0_0",
+    "description": "Based on open banking project API",
+    "title": "API URI: /customers"
+  },
+  "paths": {
+    "/customers": {
+      "get": {
+        "tags": [
+          "3_0_0"
+        ],
+        "summary": "Get Customers for the current user",
+        "description": "Retuns a list of Customers linked to the currently authenticated User.",
+        "operationId": "getCustomers",
+        "security": [
+          {
+            "bank_auth": [
+              "customers.r"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Customer"
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": [
+                      {
+                        "customer_id": 123,
+                        "email": "stevehu@gmail.com",
+                        "mobile_phone_number": "416-111-1111",
+                        "customer_number": 123,
+                        "highest_education_attained": "College",
+                        "dob_of_dependants": [
+                          "Tue Jan 22 00:08:00 UTC 2013"
+                        ],
+                        "date_of_birth": "Tue Jan 22 00:08:00 UTC 2013",
+                        "credit_rating": {
+                          "source": "OBP",
+                          "rating": "OBP"
+                        },
+                        "last_ok_date": "Tue Jan 22 00:08:00 UTC 2013",
+                        "employment_status": 123,
+                        "legal_name": "Steve Hu",
+                        "credit_limit:": {
+                          "currency": "EUR",
+                          "amount": 100
+                        },
+                        "face_image": {
+                          "url": "www.networknt.com",
+                          "date": "Tue Jan 22 00:08:00 UTC 2013"
+                        },
+                        "dependants": 4,
+                        "kyc_status": true
+                      },
+                      {
+                        "customer_id": 456,
+                        "email": "stevehu@gmail.com",
+                        "mobile_phone_number": "416-111-1111",
+                        "customer_number": 123,
+                        "highest_education_attained": "College",
+                        "dob_of_dependants": [
+                          "Tue Jan 22 00:08:00 UTC 2013"
+                        ],
+                        "date_of_birth": "Tue Jan 22 00:08:00 UTC 2013",
+                        "credit_rating": {
+                          "source": "OBP",
+                          "rating": "OBP"
+                        },
+                        "last_ok_date": "Tue Jan 22 00:08:00 UTC 2013",
+                        "employment_status": 123,
+                        "legal_name": "Steve Hu",
+                        "credit_limit:": {
+                          "currency": "EUR",
+                          "amount": 100
+                        },
+                        "face_image": {
+                          "url": "www.networknt.com",
+                          "date": "Tue Jan 22 00:08:00 UTC 2013"
+                        },
+                        "dependants": 4,
+                        "kyc_status": true
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bank_auth": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2.0 with the client credential grant flow.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://localhost:6882/token",
+            "scopes": {
+              "customers.r": "read information about customers"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "FaceImage": {
+        "required": [
+          "url",
+          "date"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "CreditRating": {
+        "required": [
+          "rating",
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "string"
+          }
+        }
+      },
+      "CreditLimit": {
+        "required": [
+          "currency",
+          "amount"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "Customer": {
+        "required": [
+          "customer_id",
+          "customer_number",
+          "legal_name",
+          "mobile_phone_number",
+          "email",
+          "face_image",
+          "date_of_birth",
+          "relationship_status",
+          "dependants",
+          "dob_of_dependants",
+          "highest_education_attained",
+          "employment_status",
+          "kyc_status",
+          "last_ok_date"
+        ],
+        "properties": {
+          "customer_id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobile_phone_number": {
+            "type": "string"
+          },
+          "customer_number": {
+            "type": "string"
+          },
+          "highest_education_attained": {
+            "type": "string"
+          },
+          "dob_of_dependants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date"
+          },
+          "credit_rating": {
+            "$ref": "#/components/schemas/CreditRating"
+          },
+          "last_ok_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "employment_status": {
+            "type": "string"
+          },
+          "legal_name": {
+            "type": "string"
+          },
+          "credit_limit": {
+            "$ref": "#/components/schemas/CreditLimit"
+          },
+          "face_image": {
+            "$ref": "#/components/schemas/FaceImage"
+          },
+          "dependants": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "relationship_status": {
+            "type": "string"
+          },
+          "kyc_status": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
