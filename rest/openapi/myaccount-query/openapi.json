@@ -1,0 +1,124 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://bank.lightapi.net/api"
+    }
+  ],
+  "info": {
+    "contact": {
+      "name": "Steve Hu",
+      "url": "www.networknt.com/example/openbanking/",
+      "email": "stevehu@gmail.com"
+    },
+    "version": "v1_0_0",
+    "description": "Based on open banking project API",
+    "title": "API URI: /my/accounts"
+  },
+  "paths": {
+    "/my/accounts": {
+      "get": {
+        "tags": [
+          "3_0_0"
+        ],
+        "summary": "Get Accounts for the current user",
+        "description": "Retuns a list of Accounts linked to the currently authenticated User.",
+        "operationId": "getAccounts",
+        "security": [
+          {
+            "bank_auth": [
+              "accounts.r"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Account"
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": [
+                      {
+                        "id": 123,
+                        "label": "checking",
+                        "account_routing": {
+                          "scheme": "IBAN",
+                          "address": "DE89 3704 0044 0532 0130 00"
+                        }
+                      },
+                      {
+                        "id": 456,
+                        "label": "saving",
+                        "account_routing": {
+                          "scheme": "IBAN",
+                          "address": "DE89 3704 0044 0532 0130 00"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bank_auth": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2.0 with the client credential grant flow.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://localhost:6882/token",
+            "scopes": {
+              "accounts.r": "read information about account"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AccountRouting": {
+        "required": [
+          "scheme",
+          "address"
+        ],
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "scheme": {
+            "type": "string"
+          }
+        }
+      },
+      "Account": {
+        "required": [
+          "id",
+          "label",
+          "account_routing"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "account_routing": {
+            "$ref": "#/components/schemas/AccountRouting"
+          }
+        }
+      }
+    }
+  }
+}
