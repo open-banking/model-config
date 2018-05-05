@@ -1,0 +1,145 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://bank.lightapi.net/api'
+info:
+  contact:
+    name: Steve Hu
+    url: www.networknt.com/example/openbanking/
+    email: stevehu@gmail.com
+  version: v1_0_0
+  description: Based on open banking project API
+  title: 'API URI: /accounts/{account_id}/transactions'
+paths:
+  '/accounts/{account_id}/transactions':
+    get:
+      tags:
+        - '3_0_0'
+      summary: Get Transactions for Account
+      description: Returns transactions list of the account specified by account_id.
+      operationId: getTransactions
+      security:
+        - bank_auth:
+            - 'transactions.r'
+      parameters:
+        - in: path
+          name: account_id
+          description: The account id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+              examples:
+                response: 
+                  value:
+                    - id: 123
+                      label: checking
+                      number: 123
+                      IBAN: GR1301720530005053000582373
+                      owners: 
+                        - id: 5995d6a2-01b3-423c-a173-5481df49bdaf
+                          provider: OBP
+                          display_name: OBP
+                      swift_bic: UKTF3049auf
+                      balance: 
+                        currency: EUR
+                        amount: '10'
+                      type: OBP
+                      account_routing: 
+                        scheme: IBAN
+                        address: DE89 3704 0044 0532 0130 00
+                    - id: 456
+                      label: checking
+                      number: 123
+                      IBAN: GR1301720530005053000582373
+                      owners: 
+                        - id: 5995d6a2-01b3-423c-a173-5481df49bdaf
+                          provider: OBP
+                          display_name: OBP
+                      swift_bic: UKTF3049auf
+                      balance: 
+                        currency: EUR
+                        amount: '10'
+                      type: OBP
+                      account_routing: 
+                        scheme: IBAN
+                        address: DE89 3704 0044 0532 0130 00
+components:
+  securitySchemes:
+    bank_auth:
+      type: oauth2
+      description: This API uses OAuth 2.0 with the client credential grant flow.
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://localhost:6882/token'
+          scopes:
+            'transactions.r': read information about transaction
+  schemas:
+    Balance:
+      required:
+        - currency
+        - amount
+      properties:
+        currency:
+          type: string
+        amount:
+          type: string
+    Owner:
+      required:
+        - id
+        - provider
+        - display_name
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        display_name:
+          type: string
+    AccountRouting:
+      required:
+        - scheme
+        - address
+      properties:
+        address:
+          type: string
+        scheme:
+          type: string
+    Transaction:
+      required:
+        - id
+        - label
+        - number
+        - owners
+        - type
+        - balance
+        - IBAN
+        - swift_bic
+        - account_routing
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        number:
+          type: string
+        IBAN:
+          type: string
+        owners:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Owner'
+        type:
+          type: string
+        swift_bic: 
+          type: string
+        balance: 
+          $ref: '#/components/schemas/Balance'
+        account_routing:
+          $ref: '#/components/schemas/AccountRouting'
+
