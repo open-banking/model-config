@@ -1,0 +1,248 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://bank.lightapi.net/api'
+info:
+  contact:
+    name: Steve Hu
+    url: www.networknt.com/example/openbanking/
+    email: stevehu@gmail.com
+  version: v1_0_0
+  description: Based on open banking project API
+  title: 'API URI: /atms'
+paths:
+  '/atms':
+    post:
+      tags:
+        - '3_0_0'
+      summary: Create an ATM
+      description: Create a new ATM entry
+      operationId: postAtms
+      security:
+        - bank_auth:
+            - 'atm.w'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Atm'
+      responses:
+        '200':
+          description: Success
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Atm'
+              examples:
+                response: 
+                  value:
+                    - id: atm-id-123
+                      name: Atm by the Lake
+                      address: 
+                        line_1: No 1 the road
+                        line_2: The Place
+                        line_3: The Hill
+                        city: Berlin
+                        state: Brandenburg
+                        country: DE
+                        postcode: 13359
+                        country_code: DE
+                      location: 
+                        latitude: 11.45
+                        longitude: 11.45
+                      meta: 
+                        license:
+                          id: '1'
+                          name: lightapi
+                      monday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      tuesday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      wednesday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      thursday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      friday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      saturday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      sunday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      is_accessible: true
+                      located_at: Full service store
+                      more_info: short walk to the lake from here
+                      has_deposit_capability: true
+                    - id: atm-id-456
+                      name: Atm by the Hill
+                      address: 
+                        line_1: No 11 the road
+                        line_2: The Place
+                        line_3: The Hill
+                        city: Berlin
+                        state: Brandenburg
+                        country: DE
+                        postcode: 13360
+                        country_code: DE
+                      location: 
+                        latitude: 11.45
+                        longitude: 11.45
+                      meta: 
+                        id: '2'
+                        name: lightapi
+                      monday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      tuesday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      wednesday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      thursday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      friday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      saturday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      sunday:
+                        opening_time: '10:00'
+                        closing_time: '18:00'
+                      is_accessible: true
+                      located_at: Full service store
+                      more_info: short walk to the hill from here
+                      has_deposit_capability: true
+                      
+components:
+  securitySchemes:
+    bank_auth:
+      type: oauth2
+      description: This API uses OAuth 2.0 with the client credential grant flow.
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://localhost:6882/token'
+          scopes:
+            'atms.w': write information about atms
+  schemas:
+    License:
+      required:
+        - id
+        - name
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+    Meta:
+      required:
+        - license
+      properties:
+        license:
+          $ref: '#/components/schemas/License'
+    Location:
+      required:
+        - latitude
+        - longitude
+      properties:
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+    Address:
+      required:
+        - line_1
+        - line_2
+        - line_3
+        - city
+        - county
+        - state
+        - postcode
+        - country_code
+      properties:
+        city:
+          type: string
+        line_2:
+          type: string
+        state:
+          type: string
+        postcode:
+          type: string
+        county:
+          type: string
+        country_code:
+          type: string
+        line_3:
+          type: string
+        line_1:
+          type: string
+    WorkHour:
+      required:
+        - opening_time
+        - closing_time
+      properties:
+        closing_time:
+          type: string
+        opening_time:
+          type: string
+    Atm:
+      required:
+        - id
+        - name
+        - address
+        - location
+        - meta
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
+        - is_accessible
+        - located_at
+        - more_info
+        - has_deposit_capability
+      properties:
+        sunday:
+          $ref: '#/components/schemas/WorkHour'
+        name:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        tuesday:
+          $ref: '#/components/schemas/WorkHour'
+        wednesday:
+          $ref: '#/components/schemas/WorkHour'
+        monday:
+          $ref: '#/components/schemas/WorkHour'
+        has_deposit_capability:
+          type: string
+        more_info:
+          type: string
+        id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/Meta'
+        address:
+          $ref: '#/components/schemas/Address'
+        friday:
+          $ref: '#/components/schemas/WorkHour'
+        is_accessible:
+          type: string
+        thursday:
+          $ref: '#/components/schemas/WorkHour'
+        saturday:
+          $ref: '#/components/schemas/WorkHour'
+        located_at:
+          type: string
+
