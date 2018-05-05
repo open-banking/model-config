@@ -54,49 +54,54 @@
                   "response": {
                     "value": [
                       {
-                        "id": 123,
-                        "label": "checking",
-                        "number": 123,
-                        "IBAN": "GR1301720530005053000582373",
-                        "owners": [
+                        "id": "5995d6a2-01b3-423c-a173-5481df49bdaf",
+                        "this_account": [
                           {
-                            "id": "5995d6a2-01b3-423c-a173-5481df49bdaf",
-                            "provider": "OBP",
-                            "display_name": "OBP"
+                            "id": "String",
+                            "bank_routing": {
+                              "scheme": "Bank_ID",
+                              "address": "gh.29.uk"
+                            },
+                            "account_routing": {
+                              "scheme": "IBAN",
+                              "address": "DE89 3704 0044 0532 0130 00"
+                            },
+                            "holders": [
+                              {
+                                "name": "OBP",
+                                "is_alias": true
+                              }
+                            ]
                           }
                         ],
-                        "swift_bic": "UKTF3049auf",
-                        "balance": {
-                          "currency": "EUR",
-                          "amount": "10"
-                        },
-                        "type": "OBP",
-                        "account_routing": {
-                          "scheme": "IBAN",
-                          "address": "DE89 3704 0044 0532 0130 00"
-                        }
-                      },
-                      {
-                        "id": 456,
-                        "label": "checking",
-                        "number": 123,
-                        "IBAN": "GR1301720530005053000582373",
-                        "owners": [
-                          {
-                            "id": "5995d6a2-01b3-423c-a173-5481df49bdaf",
-                            "provider": "OBP",
-                            "display_name": "OBP"
+                        "other_account": {
+                          "id": "5995d6a2-01b3-423c-a173-5481df49bdaf",
+                          "holder": {
+                            "name": "OBP",
+                            "is_alias": true
+                          },
+                          "bank_routing": {
+                            "scheme": "Bank_ID",
+                            "address": "gh.29.uk"
+                          },
+                          "account_routing": {
+                            "scheme": "IBAN",
+                            "address": "DE89 3704 0044 0532 0130 00"
                           }
-                        ],
-                        "swift_bic": "UKTF3049auf",
-                        "balance": {
-                          "currency": "EUR",
-                          "amount": "10"
                         },
-                        "type": "OBP",
-                        "account_routing": {
-                          "scheme": "IBAN",
-                          "address": "DE89 3704 0044 0532 0130 00"
+                        "details": {
+                          "type": "AC",
+                          "description": "OBP",
+                          "posted": "2013-01-22T00:08:00.000Z",
+                          "completed": "2013-01-22T00:08:00.000Z",
+                          "new_balance": {
+                            "currency": "EUR",
+                            "amount": 10
+                          },
+                          "value": {
+                            "currency": "EUR",
+                            "amount": 10
+                          }
                         }
                       }
                     ]
@@ -125,7 +130,84 @@
       }
     },
     "schemas": {
-      "Balance": {
+      "ThisAccount": {
+        "required": [
+          "id",
+          "bank_routing",
+          "account_routing",
+          "holders"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "bank_routing": {
+            "$ref": "#/components/schemas/Routing"
+          },
+          "account_routing": {
+            "$ref": "#/components/schemas/Routing"
+          },
+          "holders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Holder"
+            }
+          }
+        }
+      },
+      "OtherAccount": {
+        "required": [
+          "id",
+          "bank_routing",
+          "account_routing",
+          "holder"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "bank_routing": {
+            "$ref": "#/components/schemas/Routing"
+          },
+          "account_routing": {
+            "$ref": "#/components/schemas/Routing"
+          },
+          "holder": {
+            "$ref": "#/components/schemas/Holder"
+          }
+        }
+      },
+      "Details": {
+        "required": [
+          "type",
+          "description",
+          "posted",
+          "completed",
+          "new_balance",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "posted": {
+            "type": "string"
+          },
+          "completed": {
+            "type": "string"
+          },
+          "new_balance": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "value": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        }
+      },
+      "Amount": {
         "required": [
           "currency",
           "amount"
@@ -139,25 +221,21 @@
           }
         }
       },
-      "Owner": {
+      "Holder": {
         "required": [
-          "id",
-          "provider",
-          "display_name"
+          "name",
+          "is_alias"
         ],
         "properties": {
-          "id": {
+          "name": {
             "type": "string"
           },
-          "provider": {
-            "type": "string"
-          },
-          "display_name": {
-            "type": "string"
+          "is_alias": {
+            "type": "boolean"
           }
         }
       },
-      "AccountRouting": {
+      "Routing": {
         "required": [
           "scheme",
           "address"
@@ -174,45 +252,22 @@
       "Transaction": {
         "required": [
           "id",
-          "label",
-          "number",
-          "owners",
-          "type",
-          "balance",
-          "IBAN",
-          "swift_bic",
-          "account_routing"
+          "this_account",
+          "other_account",
+          "details"
         ],
         "properties": {
           "id": {
             "type": "string"
           },
-          "label": {
-            "type": "string"
+          "this_account": {
+            "$ref": "#/components/schemas/ThisAccount"
           },
-          "number": {
-            "type": "string"
+          "other_account": {
+            "$ref": "#/components/schemas/OtherAccount"
           },
-          "IBAN": {
-            "type": "string"
-          },
-          "owners": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Owner"
-            }
-          },
-          "type": {
-            "type": "string"
-          },
-          "swift_bic": {
-            "type": "string"
-          },
-          "balance": {
-            "$ref": "#/components/schemas/Balance"
-          },
-          "account_routing": {
-            "$ref": "#/components/schemas/AccountRouting"
+          "details": {
+            "$ref": "#/components/schemas/Details"
           }
         }
       }
