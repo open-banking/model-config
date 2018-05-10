@@ -101,8 +101,16 @@
                           "value": {
                             "currency": "EUR",
                             "amount": 10
-                          }
-                        }
+                          },
+                          "spend_category": "shopping",
+                          "issued_latitude": 43.65622,
+                          "issued_longitude": -79.383291
+                        },
+                        "issuing_merchant": {
+                          "id": 1,
+                          "name": "merchant"
+                        },
+                        "exec_dttm": "2017-07-21T17:32:28.000Z"
                       }
                     ]
                   }
@@ -155,6 +163,20 @@
           }
         }
       },
+      "Merchant": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "OtherAccount": {
         "required": [
           "id",
@@ -204,6 +226,23 @@
           },
           "value": {
             "$ref": "#/components/schemas/Amount"
+          },
+          "spend_category": {
+            "type": "string",
+            "enum": [
+              "shopping",
+              "travel",
+              "food",
+              "other"
+            ]
+          },
+          "issued_latitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "issued_longitude": {
+            "type": "number",
+            "format": "float"
           }
         }
       },
@@ -254,7 +293,9 @@
           "id",
           "this_account",
           "other_account",
-          "details"
+          "details",
+          "issuing_merchant",
+          "exec_dttm"
         ],
         "properties": {
           "id": {
@@ -268,6 +309,13 @@
           },
           "details": {
             "$ref": "#/components/schemas/Details"
+          },
+          "issuing_merchant": {
+            "$ref": "#/components/schemas/Merchant"
+          },
+          "exec_dttm": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }

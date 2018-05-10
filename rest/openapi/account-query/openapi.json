@@ -58,6 +58,7 @@
                         "label": "checking",
                         "number": 123,
                         "IBAN": "GR1301720530005053000582373",
+                        "status": "ACTIVE",
                         "owners": [
                           {
                             "id": "5995d6a2-01b3-423c-a173-5481df49bdaf",
@@ -68,7 +69,7 @@
                         "swift_bic": "UKTF3049auf",
                         "balance": {
                           "currency": "EUR",
-                          "amount": "10"
+                          "funds_available": "10"
                         },
                         "type": "OBP",
                         "account_routing": {
@@ -81,6 +82,7 @@
                         "label": "checking",
                         "number": 123,
                         "IBAN": "GR1301720530005053000582373",
+                        "status": "ACTIVE",
                         "owners": [
                           {
                             "id": "5995d6a2-01b3-423c-a173-5481df49bdaf",
@@ -91,7 +93,7 @@
                         "swift_bic": "UKTF3049auf",
                         "balance": {
                           "currency": "EUR",
-                          "amount": "10"
+                          "funds_available": "10"
                         },
                         "type": "OBP",
                         "account_routing": {
@@ -128,13 +130,13 @@
       "Balance": {
         "required": [
           "currency",
-          "amount"
+          "funds_available"
         ],
         "properties": {
           "currency": {
             "type": "string"
           },
-          "amount": {
+          "funds_available": {
             "type": "string"
           }
         }
@@ -176,6 +178,7 @@
           "id",
           "label",
           "number",
+          "status",
           "owners",
           "type",
           "balance",
@@ -192,6 +195,15 @@
           },
           "number": {
             "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "CLOSED",
+              "ONLY_CREDIT",
+              "ONLY_DEBIT"
+            ]
           },
           "IBAN": {
             "type": "string"
