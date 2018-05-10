@@ -42,13 +42,20 @@ paths:
                     highest_education_attained: College
                     dob_of_dependants: ['Tue Jan 22 00:08:00 UTC 2013']
                     date_of_birth: 'Tue Jan 22 00:08:00 UTC 2013'
-                    credit_rating: 
+                    address:
+                      street_address:
+                        - '595 Bay Street'
+                      city: 'Toronto'
+                      country: 'Canada'
+                      state_or_province: 'Ontario'
+                      zip_code: 'A1A 1A1'
+                    credit_rating:
                       source: OBP
                       rating: OBP
                     last_ok_date: 'Tue Jan 22 00:08:00 UTC 2013'
                     employment_status: 123
                     legal_name: Steve Hu
-                    credit_limit:: 
+                    credit_limit::
                       currency: EUR
                       amount: 100
                     face_image:
@@ -56,6 +63,8 @@ paths:
                       date: 'Tue Jan 22 00:08:00 UTC 2013'
                     dependants: 4
                     kyc_status: true
+                    gender: MALE
+                    customer_type_segment: Retail
 components:
   securitySchemes:
     bank_auth:
@@ -95,6 +104,26 @@ components:
           type: string
         currency:
           type: string
+    Address:
+      required:
+        - street_address
+        - city
+        - country
+        - state_or_province
+        - zip_code
+      properties:
+        street_address:
+          type: array
+          items:
+            type: string
+        city:
+          type: string
+        country:
+          type: string
+        state_or_province:
+          type: string
+        zip_code:
+          type: string
     Customer:
       required:
         - customer_id
@@ -104,6 +133,7 @@ components:
         - email
         - face_image
         - date_of_birth
+        - address
         - relationship_status
         - dependants
         - dob_of_dependants
@@ -111,6 +141,8 @@ components:
         - employment_status
         - kyc_status
         - last_ok_date
+        - gender
+        - customer_type_segment
       properties:
         customer_id:
           type: string
@@ -130,6 +162,8 @@ components:
         date_of_birth:
           type: string
           format: date
+        address:
+          $ref: '#/components/schemas/Address'
         credit_rating:
           $ref: '#/components/schemas/CreditRating'
         last_ok_date:
@@ -150,4 +184,19 @@ components:
           type: string
         kyc_status:
           type: boolean
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+            - OTHER
+        customer_type_segment:
+          type: string
+          enum:
+            - Retail
+            - Private Banking
+            - Imperial Service
+            - Small Business
+            - Other
+
 

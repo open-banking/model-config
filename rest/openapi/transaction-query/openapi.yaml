@@ -71,6 +71,14 @@ paths:
                         value:
                           currency: EUR
                           amount: 10
+                        spend_category: shopping
+                        issued_latitude: 43.656220
+                        issued_longitude: -79.383291
+                      issuing_merchant:
+                        id: 1
+                        name: 'merchant'
+                      exec_dttm: 2017-07-21T17:32:28Z
+
 components:
   securitySchemes:
     bank_auth:
@@ -82,37 +90,46 @@ components:
           scopes:
             'transactions.r': read information about transaction
   schemas:
-    ThisAccount: 
+    ThisAccount:
       required:
         - id
         - bank_routing
         - account_routing
         - holders
       properties:
-        id: 
+        id:
           type: string
         bank_routing:
           $ref: '#/components/schemas/Routing'
         account_routing:
           $ref: '#/components/schemas/Routing'
-        holders: 
+        holders:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/Holder'
-    OtherAccount: 
+    Merchant:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    OtherAccount:
       required:
         - id
         - bank_routing
         - account_routing
         - holder
       properties:
-        id: 
+        id:
           type: string
         bank_routing:
           $ref: '#/components/schemas/Routing'
         account_routing:
           $ref: '#/components/schemas/Routing'
-        holder: 
+        holder:
           $ref: '#/components/schemas/Holder'
     Details:
       required:
@@ -127,14 +144,27 @@ components:
           type: string
         description:
           type: string
-        posted: 
+        posted:
           type: string
-        completed: 
+        completed:
           type: string
-        new_balance: 
+        new_balance:
           $ref: '#/components/schemas/Amount'
-        value: 
+        value:
           $ref: '#/components/schemas/Amount'
+        spend_category:
+          type: string
+          enum:
+            - shopping
+            - travel
+            - food
+            - other
+        issued_latitude:
+          type: number
+          format: float
+        issued_longitude:
+          type: number
+          format: float
     Amount:
       required:
         - currency
@@ -168,13 +198,21 @@ components:
         - this_account
         - other_account
         - details
+        - issuing_merchant
+        - exec_dttm
       properties:
         id:
           type: string
         this_account:
           $ref: '#/components/schemas/ThisAccount'
-        other_account: 
+        other_account:
           $ref: '#/components/schemas/OtherAccount'
         details:
           $ref: '#/components/schemas/Details'
+        issuing_merchant:
+          $ref: '#/components/schemas/Merchant'
+        exec_dttm:
+          type: string
+          format: date-time
+
 

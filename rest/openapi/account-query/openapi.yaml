@@ -35,38 +35,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
               examples:
-                response: 
+                response:
                   value:
                     - id: 123
                       label: checking
                       number: 123
                       IBAN: GR1301720530005053000582373
-                      owners: 
+                      status: ACTIVE
+                      owners:
                         - id: 5995d6a2-01b3-423c-a173-5481df49bdaf
                           provider: OBP
                           display_name: OBP
                       swift_bic: UKTF3049auf
-                      balance: 
+                      balance:
                         currency: EUR
-                        amount: '10'
+                        funds_available: '10'
                       type: OBP
-                      account_routing: 
+                      account_routing:
                         scheme: IBAN
                         address: DE89 3704 0044 0532 0130 00
                     - id: 456
                       label: checking
                       number: 123
                       IBAN: GR1301720530005053000582373
-                      owners: 
+                      status: ACTIVE
+                      owners:
                         - id: 5995d6a2-01b3-423c-a173-5481df49bdaf
                           provider: OBP
                           display_name: OBP
                       swift_bic: UKTF3049auf
-                      balance: 
+                      balance:
                         currency: EUR
-                        amount: '10'
+                        funds_available: '10'
                       type: OBP
-                      account_routing: 
+                      account_routing:
                         scheme: IBAN
                         address: DE89 3704 0044 0532 0130 00
 components:
@@ -83,11 +85,11 @@ components:
     Balance:
       required:
         - currency
-        - amount
+        - funds_available
       properties:
         currency:
           type: string
-        amount:
+        funds_available:
           type: string
     Owner:
       required:
@@ -115,6 +117,7 @@ components:
         - id
         - label
         - number
+        - status
         - owners
         - type
         - balance
@@ -128,6 +131,13 @@ components:
           type: string
         number:
           type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - CLOSED
+            - ONLY_CREDIT
+            - ONLY_DEBIT
         IBAN:
           type: string
         owners:
