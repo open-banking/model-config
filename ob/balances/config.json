@@ -24,6 +24,6 @@
     "password": "my-secret-pw"
   },
   "supportH2ForTest": true,
-  "supportClient": false,
+  "supportClient": true,
   "dockerOrganization": "networknt"
 }
