@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/balances/accounts/{AccountId}": {
+    "/balances/{AccountId}": {
       "get": {
         "tags": [
           "Balances"
