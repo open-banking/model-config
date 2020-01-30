@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/transactions/accounts/{AccountId}": {
+    "/transactions/{AccountId}": {
       "get": {
         "tags": [
           "Transactions"
